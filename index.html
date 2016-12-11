@@ -404,27 +404,26 @@
 <li>1 <em>文章摘要</em></li>
 </ul>
 <hr>
-<p> 该文章是一篇来自于网络博客的文字，主要是了基于现在的静态特征检测的动态检测方法的缺陷，相比于动态检测，静态检测更加有优势，但是目前几天特征的静态检测在特征提取上面临缺陷，从而导致静态检测只能检测已有特征的恶意样本，针对现在大量的样本经过混淆和加壳处理，导致静态检测提取特征困难。因此作者从静态文件的文件结构特征提出的数据作为特征出发利用机器学习的方法来进行模型的训练，最后并利用该模型来进行恶意文件的检测，并取得了很好的效果。</p>
+<p> 该文章是一篇来自于网络博客的文字，主要是了基于现有的静态特征检测的动态检测方法面临的缺陷，提出了通过机器学习方法来进行可执行文件检测的框架模型。相比于动态检测，作者认为静态检测更加有优势，但是目前静态检测在特征提取上面临着较大缺陷，从而导致静态检测只能检测已有特征的恶意样本，而对未知文件检测难度较大，另外现在大量的样本经过混淆和加壳处理，导致静态检测提取特征困难。因此作者利用静态文件的文件结构作为相关的特征，利用机器学习的方法来进行模型的训练，最后并利用该模型来进行恶意文件的检测，并取得了很好的效果。</p>
 <ul>
 <li>2 <em>文章主要内容</em></li>
 </ul>
 <hr>
-<p> 文字主要分为三部分，第一部分论述了静态检测的优势和缺陷，第二部分论述了机器学习的相关知识，第三部分则是论述了特征提取和选择，第四部分则是论述了实验结果。</p>
+<p> 文字主要分为三部分，第一部分论述了静态检测的优势和缺陷，第二部分重点论述了随机森林机器学习的相关知识，第三部分则是论述了如何进行特征的提取和选择，第四部分则是论述了实验结果。</p>
 <p> 第一部分：作者首先论述了静态检测的缺点和优势，静态检测的优点有如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ 能够在可执行文件执行前进行检测</div><div class="line">$ 能够对一些C&amp;C域名已经失效的样本进行分析</div><div class="line">$ 能够对一些不是标准的非有效的可执行文件进行检测</div><div class="line">$ 计算代价较低</div></pre></td></tr></table></figure>
 <p>在同样静态检测具有的缺点如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ 检测结果无法依赖于确定的行为。</div><div class="line">$ 无法检测在内存中发生的行为。</div><div class="line">$ 不太可能检测的原始的威胁。</div><div class="line">$ 很容易被开发者找到相应的对策来绕过。</div></pre></td></tr></table></figure>
 <p> 第二部分：作者论述了机器学习在恶意样本检测中的应用，机器学习就是通过构建一个预测模型来对恶意软件进行分类，是属于一个二分类问题，在机器学习模型训练中，通过大量的各种类型的恶意的正常的样本作为训练数据来进行训练，通过提取出这些训练样本中提取出样本数据的特征，将这些特征输入模型进行训练然后得到模型的参数，当模型构建好后便可以利用模型来对新的没有标签的样本进行预测，模型通过自动提取出这些测试样本的特征并根据模型得到该样本的一个分类结果，从而判定样本是恶意的还是非恶意的。利用样本来训练机器学习模型的过程如下：<img src="http://sentinelone.com/wp-content/uploads/2016/11/MachineLearning_1.png" alt="机器学习模型"><br>当模型训练完成后，并可以利用该模型来对新的样本进行检测，利用模型来进行检测过程如下：<br><img src="http://sentinelone.com/wp-content/uploads/2016/11/MachineLearning_2.png" alt="检测过程"></p>
 <p>机器学习有多种选择算法，这里作者选择了随机森林算法(Randomo Forest)。而随机森林算法的好处是具有很好的效果并且不需要过多的对模型参数进行调整，即使针对于大量的特征。作者在这里对随机森林进行了一个解释，其使用的例子是通过一些特征来对毛和狗进行辨识的。其主要选取特征有如下：<br>number of legs,covered in fur,sometimes goes outdoors,loves your.在随机森林选择算法中，就是通过在一棵类似的分类数中通过，不断的条件满足于否来最后进行分类，作者花了一个示意图：<br><img src="http://sentinelone.com/wp-content/uploads/2016/11/RandomForest_1.png" alt="随机森林在毛和狗辨别">。</p>
+<p>第三部分：这里作者论述了如何从可执行文件中选取特征，作者在选择特征是是通过对PE（Portable Executables）文件进行解析来进行特征提取，在这些特征中，一些事一些字符串类型的特征（.text,Code,bss）而一些事一个浮点数或者二进制类型的0或者1的数据，针对字符串和浮点数作者则是通过将浮点数转换成对应的熵（entropy）来进行计算。<br>在实验中，作者选择的特征的维度达到了1，000，000维，由于维度较大，由于维度较大，因此存在着较多的噪声，因此作者利用了PCA主成分分析方法来进行了特征的降维，从而可以加快模型训练时间和让模型预测准确率提高。PCA主成分分析具体内容链接参考:<a href="http://sebastianraschka.com/Articles/2014_kernel_pca.html" target="_blank" rel="external">PCA主成分分析</a>,这里面论述很清楚。<br>除了利用PCA进行降维度外，作者还进一步进行了特征的选择，通过去掉一些不相关的特征从而让数据维度进一步降低，在特征选取上，作者通过计算ANOVAF-value，<a href="http://blog.minitab.com/blog/adventures-in-statistics/understanding-analysis-of-variance-anova-and-the-f-test" target="_blank" rel="external">ANOVAF-value</a>值，并通过设定阈值来进行特征的选取，从而作者将维度降低到了31000个维度特征。<br>为了进一步开发静态检测系统，作者通过进一步的搜集新的正常的和恶意的样本来进行进一步的训练，并进一步选择更多的特征来进行特征的选取，从而是模型有更好的准确率，能够对未知的恶意样本进行准确的检测。</p>
+<p>在第四部分中，作者论述了为何选择了随机森林模型以及如何进行参数调整。在初始实验室，作者实验了一些听起来比较高级和智能的模型，如SVM(支持向量机)，MLP(多层感知机)，但是在实验时作者并未取得很好的效果，作者也没有进一步深入分析原因，最后作者经过实验选择了随机森林的机器学习算法来进行模型的算法，并取得了很好的效果。在选择好模型后，作者需要对模型的参数进行调整，在进行参数调整时，作者通过利用<a href="http://scikit-learn.org/stable/modules/grid_search.html" target="_blank" rel="external">grid searching</a>技巧来对模型进行训练和调整相关的参数。最后做了画了相关的实验室结果图。<br><a href="http://sentinelone.com/wp-content/uploads/2016/11/gridsearch2.png" target="_blank" rel="external">实验结果图</a><br>最后作者进行了相关的总结。</p>
 <ul>
-<li>3</li>
+<li>3 论文创新点：<br>在论文中，作者通过分了了静态恶意样本检测分析的不足，提出了利用机器学习算法来进行恶意样本的检测，并通过将样本的文件结构信息作为特征进行模型训练，从而取得了很好的效果</li>
 </ul>
 <hr>
-<ul>
-<li>4</li>
-</ul>
-<hr>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  通过阅读论文，了解了机器学习在恶意样本检测的中的应用，正如作者所说，通过利用机器学习来方法来对恶意样本进行检测能够比动态检测能有更好的效果。从而能够更好的保护我们的客户免受网络攻击。</p>
+
           
         
       
