@@ -382,7 +382,29 @@
       
         
           
-            
+            <h1 id="论文名称：Detecting-ROP-with-Statistical-Learning-of-Program-Characteristics"><a href="#论文名称：Detecting-ROP-with-Statistical-Learning-of-Program-Characteristics" class="headerlink" title="论文名称：Detecting ROP with Statistical Learning of Program Characteristics"></a>论文名称：Detecting ROP with Statistical Learning of Program Characteristics</h1><h1 id="论文引用：-Elsabagh-M-Barbara-D-Fleck-D-et-al-Detecting-ROP-with-Statistical-Learning-of-Program-Characteristics-C-ACM-on-Conference-on-Data-and-Application-Security-and-Privacy-ACM-2017-219-226"><a href="#论文引用：-Elsabagh-M-Barbara-D-Fleck-D-et-al-Detecting-ROP-with-Statistical-Learning-of-Program-Characteristics-C-ACM-on-Conference-on-Data-and-Application-Security-and-Privacy-ACM-2017-219-226" class="headerlink" title="论文引用： Elsabagh M, Barbara D, Fleck D, et al. Detecting ROP with Statistical Learning of Program Characteristics[C]// ACM on Conference on Data and Application Security and Privacy. ACM, 2017:219-226."></a>论文引用： Elsabagh M, Barbara D, Fleck D, et al. Detecting ROP with Statistical Learning of Program Characteristics[C]// ACM on Conference on Data and Application Security and Privacy. ACM, 2017:219-226.</h1><h1 id="论文作者：-Mohamed-Elsabagh-Daniel-Barbara-Dan-Fleck-Angelos-Stavrou"><a href="#论文作者：-Mohamed-Elsabagh-Daniel-Barbara-Dan-Fleck-Angelos-Stavrou" class="headerlink" title="论文作者： Mohamed Elsabagh Daniel Barbará Dan Fleck Angelos Stavrou"></a>论文作者： Mohamed Elsabagh Daniel Barbará Dan Fleck Angelos Stavrou</h1><h1 id="论文主要贡献："><a href="#论文主要贡献：" class="headerlink" title="论文主要贡献："></a>论文主要贡献：</h1><hr>
+<ul>
+<li>1 论文研究了结合微控制器独立程序特征以及典型的硬件特征相结合的ROP攻击检测方案。</li>
+<li>2 提出了一种利用方向统计特征并将其映射到高维空间的异常检测算法。</li>
+<li>3 实现的一个原型系统EigenROP.</li>
+<li>4 基于实际的ROP攻击检测来评估模型的安全效率以及准确性。</li>
+<li>论文</li>
+</ul>
+<hr>
+<h1 id="论文主要研究内容"><a href="#论文主要研究内容" class="headerlink" title="论文主要研究内容"></a>论文主要研究内容</h1><p>论文讨论的核心内容是基于统计学习方法的ROP检测技术。论文作者首先分析了现有的ROP检测技术存在的一些缺陷，在此基础上提出了基于“微指令机构特征（Microarchitecture-independentCharacteristics）”统计来检测ROP的方法。<br>    作者的出发点以及思路是认为ROP链的执行在行为特征上会与程序正常执行逻辑的特征不同。如ROP在执行过程中，会有频繁的ret、push/pop以及call指令执行等操作，而正常的程序逻辑上则不会频繁的出现这种特征。<br>    基于以上思路出发，做作利用Intel开发的指令插桩工具pin对程序执行指令进行分析，通过间隔的对程序作快照（执行固定几条指令），然后将单个快照间隔内执行的n条指令组成一个向量空间，由于指令之间有相关性，因此作者这里通过将向量空间影射到高纬空间中，然后通过PCA主成分分析的方法来得到其主方向的角度。<br>    作者认为，正常程序执行逻辑的一组指令组成的向量空间影射到高纬空间得到主成分后其方向性应该变化不大，而一组ROP指令执行后影射到高纬空间后得到的主方向会和正常程序执行得到的主方向有一个较大的偏离。<br>下图是作者的模型的一个示意图。：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1133028-f5d9ea6fc19baca1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>因此基于以上思想，作者首先通过对大量正常指令的学习后得到一个主方向，并得到其偏离的阀阈值。当进行检测时，如果一组执行执行后进行影射得到的高纬空间的主成分与事先得到的模型的主方向的之间的偏差超过阈值，则认为是一个异常。<br>    最后作者进行了实验评估，作者通过评级准确率和时间消耗来评价模型。最后得到了81%的正确率。最后作者对影响实验结果的一些因素进行了讨论。<br>作者的一些实验结果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1133028-1235595bdb7fd81d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1133028-ca98e8ce912402d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1133028-803137127bbf7a76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h1 id="一些建议和想法"><a href="#一些建议和想法" class="headerlink" title="一些建议和想法"></a>一些建议和想法</h1><hr>
+<ul>
+<li>采用基于pin的方式来动态收集特征，如果漏洞触发条件不满足，那么将会导致检测失败，而在实际环境中，这种可能性经常发生，那么该方法将无法捕获到有效的攻击。</li>
+<li>该方法有一定的漏报率，如果在进行动态检测前，没有进行有效的静态检测分析，那么攻击代码实际运行将会导致攻击者面临很高的风险。</li>
+<li>该方法中提到的思路是对程序定期做快照的方式，那么这将导致很大延迟，在实际使用中将会受到限制。</li>
+<li>综合以上建议，一些想法则是能够根据静态的特征提取序列来对rop链进行检测，一方面对于一些在实际中不触发的漏洞也可以进行有效的检测，另外一方面则是从实际应用以及安全性上有更好的效果。layout: detecting</li>
+</ul>
+
           
         
       
@@ -771,7 +793,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
