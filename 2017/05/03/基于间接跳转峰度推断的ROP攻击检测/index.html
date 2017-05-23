@@ -80,7 +80,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Coolsmurfs, NexT" />
+  <meta name="keywords" content="简介跳转 ROP检测," />
 
 
 
@@ -96,13 +96,16 @@
 
 
 
+<meta name="description" content="论文名称：Inference of Peak Density of Indirect Branches to Detect ROP Attacks论文引用： Tymburib, Mateus, Moreira R E A, et al. Inference of peak density of indirect branches to detect ROP attacks[C]// Interna">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于间接跳转峰度推断的ROP攻击检测">
 <meta property="og:url" content="http://yoursite.com/2017/05/03/基于间接跳转峰度推断的ROP攻击检测/index.html">
 <meta property="og:site_name" content="Coolsmurfs的博客">
-<meta property="og:updated_time" content="2017-05-03T07:27:27.000Z">
+<meta property="og:description" content="论文名称：Inference of Peak Density of Indirect Branches to Detect ROP Attacks论文引用： Tymburib, Mateus, Moreira R E A, et al. Inference of peak density of indirect branches to detect ROP attacks[C]// Interna">
+<meta property="og:updated_time" content="2017-05-23T05:24:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于间接跳转峰度推断的ROP攻击检测">
+<meta name="twitter:description" content="论文名称：Inference of Peak Density of Indirect Branches to Detect ROP Attacks论文引用： Tymburib, Mateus, Moreira R E A, et al. Inference of peak density of indirect branches to detect ROP attacks[C]// Interna">
 
 
 
@@ -376,7 +379,18 @@
       
 
       
-        
+        <h1 id="论文名称：Inference-of-Peak-Density-of-Indirect-Branches-to-Detect-ROP-Attacks"><a href="#论文名称：Inference-of-Peak-Density-of-Indirect-Branches-to-Detect-ROP-Attacks" class="headerlink" title="论文名称：Inference of Peak Density of Indirect Branches to Detect ROP Attacks"></a>论文名称：Inference of Peak Density of Indirect Branches to Detect ROP Attacks</h1><h1 id="论文引用：-Tymburib-Mateus-Moreira-R-E-A-et-al-Inference-of-peak-density-of-indirect-branches-to-detect-ROP-attacks-C-International-Symposium-on-Code-Generation-and-Optimization-2016-150-159"><a href="#论文引用：-Tymburib-Mateus-Moreira-R-E-A-et-al-Inference-of-peak-density-of-indirect-branches-to-detect-ROP-attacks-C-International-Symposium-on-Code-Generation-and-Optimization-2016-150-159" class="headerlink" title="论文引用： Tymburib, Mateus, Moreira R E A, et al. Inference of peak density of indirect branches to detect ROP attacks[C]// International Symposium on Code Generation and Optimization. 2016:150-159."></a>论文引用： Tymburib, Mateus, Moreira R E A, et al. Inference of peak density of indirect branches to detect ROP attacks[C]// International Symposium on Code Generation and Optimization. 2016:150-159.</h1><h1 id="论文作者：-Mateus-Tymburiba-Rubens-E-A-Moreira-Fernando-Magno-Quint˜-ao-Pereira"><a href="#论文作者：-Mateus-Tymburiba-Rubens-E-A-Moreira-Fernando-Magno-Quint˜-ao-Pereira" class="headerlink" title="论文作者： Mateus Tymburibá Rubens E. A. Moreira Fernando Magno Quint˜ ao Pereira"></a>论文作者： Mateus Tymburibá Rubens E. A. Moreira Fernando Magno Quint˜ ao Pereira</h1><h1 id="论文摘要："><a href="#论文摘要：" class="headerlink" title="论文摘要："></a>论文摘要：</h1><hr>
+<ul>
+<li>Return-oriented Programing（ROP）通常指的高频率的利用一系列包含简介跳转的指令来执行特定程序流程的方法。从这个观察点出发，很多研究都都提出了通过检测简介跳转指令的紧度（density）的方法来对ROP攻击进行检测。这些检测技巧都使用了一个通用的阈值：对于任何一个程序，刻画一个ROP攻击的间接跳转指令的紧度都是一样的。这篇论文论述了使用通用阈值的检测方法很容易被规避掉。因此我们引入了一种过程间的上下文半语言分析的静态代码分析方法来预测程序简介跳转的最大紧度值的方法。这种分析可以根据每个不同的分析来绝对其不同的简介跳转的阈值。因此使得攻击者很难绕过该保护措施。我们在LLVM上实践了我们的想法并且为 SPEC CPU2006的不同应用程序生成了不同的阈值。我们分析了我们方案的准确性通过实际执行程序的不同响应阈值。另外，我们的算法还是实际的：该方案找到了一个近似的解决方案对理论上不可预测的值，在处理超过700 千跳汇编指令的程序时该算法不超过25分钟。<h1 id="论文主要贡献"><a href="#论文主要贡献" class="headerlink" title="论文主要贡献"></a>论文主要贡献</h1></li>
+</ul>
+<hr>
+<ul>
+<li>作者说明了在windows系统上的ROP攻击检测中，通过每31条指令来分析简介跳转的紧度已经足够检测在windows平台上由exploit-db生成的15个rop攻击。</li>
+<li>在2.2节中我们展示了这种机制可以被绕过，根据编译选项来生成二进制文件。最后我们根据GCC的一些编译选项绕过了该策略的限制。</li>
+<li>在第3节中我们描述了一种通过静态分析程序来预测简介跳转峰值紧度的方法。通过这种特定的获取阈值的方法来代替传统的通过阈值的方法，我们分析了可以利用该方案设计一种检测机来提高针对2.2中所描述的攻击方案的门槛。<h1 id="自己的一些想法："><a href="#自己的一些想法：" class="headerlink" title="自己的一些想法："></a>自己的一些想法：</h1></li>
+<li>该方法通过静态分析程序的方法来预测针对不同应用程序检测ROP攻击是的简介跳转的阈值问题，从而使得理论上不可预测的简介跳转的阈值问题得到了一个近视的解决方法。在实际上作者也进行了分析和讨论，有一定的创新，自己觉得还是存在一些问题的。该方法通过静态分析大量的程序来得到针对该程序检测ROP简介跳转的阈值，但是面对曾经没有分析过的程序时，那么将无法推测其阈值，因此在实际应用中还存在一些缺陷。</li>
+</ul>
+
       
     </div>
 
@@ -396,6 +410,12 @@
 
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/简介跳转-ROP检测/" rel="tag"># 简介跳转 ROP检测</a>
+          
+        </div>
       
 
       
@@ -461,8 +481,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://www.scusec.org/content/img/C/llp-270.jpg"
@@ -490,7 +519,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -553,6 +582,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#论文名称：Inference-of-Peak-Density-of-Indirect-Branches-to-Detect-ROP-Attacks"><span class="nav-number">1.</span> <span class="nav-text">论文名称：Inference of Peak Density of Indirect Branches to Detect ROP Attacks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#论文引用：-Tymburib-Mateus-Moreira-R-E-A-et-al-Inference-of-peak-density-of-indirect-branches-to-detect-ROP-attacks-C-International-Symposium-on-Code-Generation-and-Optimization-2016-150-159"><span class="nav-number">2.</span> <span class="nav-text">论文引用： Tymburib, Mateus, Moreira R E A, et al. Inference of peak density of indirect branches to detect ROP attacks[C]// International Symposium on Code Generation and Optimization. 2016:150-159.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#论文作者：-Mateus-Tymburiba-Rubens-E-A-Moreira-Fernando-Magno-Quint˜-ao-Pereira"><span class="nav-number">3.</span> <span class="nav-text">论文作者： Mateus Tymburibá Rubens E. A. Moreira Fernando Magno Quint˜ ao Pereira</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#论文摘要："><span class="nav-number">4.</span> <span class="nav-text">论文摘要：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#论文主要贡献"><span class="nav-number">5.</span> <span class="nav-text">论文主要贡献</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自己的一些想法："><span class="nav-number">6.</span> <span class="nav-text">自己的一些想法：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>
