@@ -382,10 +382,10 @@
       
         
           
-            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>一直以来都很崇拜能够挖到漏洞的大牛，尤其是系统底层漏洞或者二进制软件漏洞。一直想在这方面进行一点深入的研究，苦于自己能力有限，加上时有懒惰，因此一直没有什么进展。最近，刚好听了一些报告，也和在工业界的同学交流，知道了一款宇宙最前的模糊测试工具AFL(America Fuzzing Loop)，一看名字挺像美国佬搞的，简答调研了一下，没找到出处，不再深入追究。既然是号称宇宙最前的Fuzzing测试工具，是否可以助我等小辈一臂之力呢？抱着无限期望，遂准备捣鼓一番。由于自己对windows上的二进制程序漏洞更加熟悉一些，因此准备在windows平台上进行环境搭建，并进行简单的测试。经过前期的调研，了解到已有这方面的大牛早已将其移植道windows平台，并发布了windows版本win-AFL。于是在前人的若干博客以及教程的指导下，开始依葫芦画瓢，准备自己研究一下。这篇博客中简单记录下在windows上的安装过程以及初步简单的使用，一方面记录下过程以及遇到的问题，为后续其他人安装有一个参考指导，其次也为自己的后续深入研究打下基础。</p>
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>一直以来都很崇拜能够挖到漏洞的大牛，尤其是系统底层漏洞或者二进制软件漏洞。一直想在这方面进行一点深入的研究，苦于自己能力有限，加上时有懒惰，因此一直没有什么进展。最近，刚好听了一些报告，也和在工业界的同学交流，了解了一款宇宙最前的模糊测试工具AFL(America Fuzzing Loop)，一看名字挺像美国佬搞的，简单调研了一下，没找到出处，不再深入追究。既然是号称宇宙最前的Fuzzing测试工具，是否可以助我等小辈一臂之力呢？抱着无限期望，遂准备捣鼓一番。由于自己对windows上的二进制程序漏洞更加熟悉一些，因此准备在windows平台上进行环境搭建，并进行简单的测试。经过前期的调研，了解到已有这方面的大牛早已将其移植到windows平台，并发布了windows版本win-AFL。于是在前人的若干博客以及教程的指导下，开始依葫芦画瓢，准备自己研究一下。这篇博客中简单记录下在windows上的安装过程以及初步简单的使用，一方面记录下过程以及遇到的问题，为后续其他人安装有一个参考指导，其次也为自己的后续深入研究打下基础。</p>
 <h1 id="工具编译"><a href="#工具编译" class="headerlink" title="工具编译"></a>工具编译</h1><p>在windows平台上搭建win-AFL,可以下载已经编译好的版本，也可以选择自己下载相关源码进行手动编译。为了更好的深入理解以及方便以后自己对源代码进行修改后编译，这里下载相关源码进行手动编译。相关的步骤如下：</p>
 <ul>
-<li>1 相关的工具的准备，在编译Winafl过程中，需要如下工具包：<a href="http://www.cmake.org" target="_blank" rel="external">CMake</a>跨平台编译工具。<a href="http://dynamorio.org" target="_blank" rel="external">DynamoRIO</a>这是一个开源的动态插桩工具，和pin、Valgrind等是在程序分析中经常使用的动态插桩工具。<a href="https://github.com/ivanfratric/winafl" target="_blank" rel="external">Winafl</a>源码，Visual Studio C++，windows的开发工具。在下载相关工具时，需要选择好相应的windows版本，DynamoRIO可以直接下载release版本。选择vs时最好选择VS 2010以后的版本，根据说明vs2010以后的版本会出现stdint.h找不到的错误。这里我自己选择的的是VS2015的版本。</li>
+<li>1 相关的工具的准备，在编译Winafl过程中，需要如下工具包：<a href="http://www.cmake.org" target="_blank" rel="external">CMake</a>跨平台编译工具。<a href="http://dynamorio.org" target="_blank" rel="external">DynamoRIO</a>这是一个开源的动态插桩工具，和pin、Valgrind等是在程序分析中经常使用的动态插桩工具。<a href="https://github.com/ivanfratric/winafl" target="_blank" rel="external">Winafl</a>源码，Visual Studio C++，windows的开发工具。在下载相关工具时，需要选择好相应的windows版本，DynamoRIO可以直接下载源码版本。选择vs时最好选择VS 2010以后的版本，根据说明vs2010以后的版本不会出现stdint.h找不到的错误。这里我自己选择的的是VS2015的版本。</li>
 <li>2 将下载的工具解压到一个新建的文件夹中，如WIN-AFL.然后将winalf和DynamoRIO解压到该目录下。</li>
 <li>3 启动vs的命令行工具，根据需要进入不同的环境，如果是要编译32位版本的则进入32位环境，而编译64位的则需要进入进行64位环境。</li>
 <li>4 具体编译过程如下，进入Winafl的路径，有Bin32和Bin64目录，有已经编译好的工具。也可以进行重新编译。32位和64位具体编译步骤如下所示：<br>32位编译命令：</li>
@@ -394,7 +394,7 @@
 <p>md b32<br>cd b32<br>cmake .. -DDynamoRIO_DIR =D:\WIN-AFL\DynamoRIO\cmake<br>CMAKE -build . –config Release(这是时编译成Release版本，如果要编译成Debug可以将Release替换成Debug).<br>64位下相关编译命令如下：</p>
 <hr>
 <p>md b64<br>cd b64<br>cmake -G “Visual Studio 10 Win64” .. -DDynamoRIO_DIR=D:\WIN-AFL\DynamoRIO\cmake<br>cmake –build . –config Release(如果需要编译成Debug,则使用Debug命令)</p>
-<p>编译完成后，就可以开始使用Winafl了，编译后的文件分别在目录的Release或者Debug目录下。<br>本节主要简单描述了一些Winafl的源码编译过程，后面会逐步介绍一下Winafl在windows平台下的使用。希望通过系列文章，对Winafl不断熟悉，深入了解其内部机制。能够在漏洞挖掘的道路上越走越远。</p>
+<p>编译完成后，就可以开始使用Winafl了，编译后的文件分别在目录的Release或者Debug目录下。<br>本节主要简单描述了一些Winafl的源码编译过程，后面会逐步介绍一下Winafl在windows平台下的使用。希望通过系列文章，对Winafl不断熟悉，深入了解其内部机制。能够在漏洞挖掘的道路上越走越远。下节将记录Winafl的相关具体使用。</p>
 
           
         
@@ -560,7 +560,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/26/基于特征统计学习的ROP检测技术/">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/26/ROP DETECT/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Coolsmurfs">
@@ -585,7 +585,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/04/26/基于特征统计学习的ROP检测技术/" itemprop="url">
+                <a class="post-title-link" href="/2017/04/26/ROP DETECT/" itemprop="url">
                   ROP DETECT
                 </a>
               
@@ -698,7 +698,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/26/ROP DETECT/">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/26/基于特征统计学习的ROP检测技术/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Coolsmurfs">
@@ -723,7 +723,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/04/26/ROP DETECT/" itemprop="url">
+                <a class="post-title-link" href="/2017/04/26/基于特征统计学习的ROP检测技术/" itemprop="url">
                   ROP DETECT
                 </a>
               
